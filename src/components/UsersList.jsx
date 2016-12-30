@@ -2,7 +2,7 @@ import React from "react";
 
 export default class UsersList extends React.Component {
 
-	getUserItem(user){
+	getUserItem(user, i){
 		return (
 			<li key={i} onClick={()=> this.props.onSelectUser(user) }>
 				{user.name}

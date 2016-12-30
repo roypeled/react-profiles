@@ -21599,7 +21599,7 @@
 	
 		_createClass(UsersList, [{
 			key: "getUserItem",
-			value: function getUserItem(user) {
+			value: function getUserItem(user, i) {
 				var _this2 = this;
 	
 				return _react2.default.createElement(
