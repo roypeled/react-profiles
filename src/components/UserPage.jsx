@@ -2,9 +2,11 @@ import React from "react";
 
 export default class UserPage extends React.Component {
 
+
+
 	render(){
 		return (
-			<div>
+			<div style={ {backgroundColor: this.props.color} }>
 				<dl>
 					<dt>ID</dt>
 					<dd>{this.props.id}</dd>

@@ -1,34 +1,19 @@
 import React from "react";
 import UsersList from "./UsersList.jsx";
-import UsersService from "../services/UsersService.es6";
 import UserPage from "./UserPage.jsx";
+import {fetchUsers, selectUser, randomizeColor} from "../actions/index.jsx";
+import {connect} from "react-redux";
 
 
-export default class App extends React.Component {
+class App extends React.Component {
 
-	constructor(){
-		super();
-
-		this.state = {
-			users: null,
-			selectedUser: null
-		};
-
-		UsersService.getAllUsers()
-			.then(this.onUsers.bind(this));
-	}
-
-	onUsers(users){
-		this.setState({users: users});
-	}
-
-	onSelectUser(user){
-		this.setState({selectedUser: user});
+	componentDidMount(){
+		this.props.getUsers();
 	}
 
 	getUserPage(){
-		if(this.state.selectedUser)
-			return <UserPage {...this.state.selectedUser}/>;
+		if(this.props.selectedUser)
+			return <UserPage {...this.props.selectedUser}/>;
 		else
 			return <p>Please select a user</p>
 	}
@@ -36,10 +21,28 @@ export default class App extends React.Component {
 	render(){
 		return (
 			<div>
-				<UsersList list={this.state.users} onSelectUser={this.onSelectUser.bind(this)} />
+				<UsersList list={this.props.users} onSelectUser={this.props.selectUser} />
 				{ this.getUserPage() }
 			</div>
 		)
 	}
-
 }
+
+function mapStateToProps(state){
+	return {
+		users: state.users,
+		selectedUser: state.user
+	}
+}
+
+function mapDispatchToProps(dispatch){
+	return {
+		getUsers: ()=> dispatch( fetchUsers() ),
+		selectUser: (user, color)=> {
+			dispatch( selectUser(user) );
+			dispatch( randomizeColor(color) )
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
